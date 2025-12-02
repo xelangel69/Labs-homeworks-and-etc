@@ -12,8 +12,8 @@
 - Английский язык B1.2
 - Реформы и реформаторы в истории России
 
-Мои контакты:
-- [](https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg) Telegram: [@xelangel69](https://t.me/xelangel69)
-- [](https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg) Почта: rivzkiank@gmail.com
+**Мои контакты:**
+- <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" width="15" height="15"> Telegram: [@xelangel69](https://t.me/xelangel69)
+- <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" width="15" height="15"> Почта: rivzkiank@gmail.com
 
-*P.s. <br> Если у вас есть какие-то вопросы, или вам нужна помощь (вдруг вы неопытный и зеленый первак, который вообще не бум-бум что делать), пишите мне в Telegram или на почту, постараюсь помочь)*
+*P.s. <br> Если у вас есть какие-то вопросы, или вам нужна помощь (вдруг вы неопытный и зеленый первак, который вообще не бум-бум что делать), пишите мне в Telegram или на почту, постараюсь помочь =)*
