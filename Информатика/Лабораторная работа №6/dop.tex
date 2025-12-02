@@ -1,0 +1,141 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{calc}
+
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
+
+\definecolor{byrneRed}{RGB}{210, 50, 40}
+\definecolor{byrneBlue}{RGB}{40, 70, 140}
+\definecolor{byrneYellow}{RGB}{240, 170, 40}
+\definecolor{byrneBlack}{RGB}{20, 20, 20}
+
+\newcommand{\bLine}[4]{%
+    \tikz[baseline=-2pt]{
+        \draw[#1, line width=3pt, line cap=round] (0,0) -- (#2,0);
+        \node[text=black, font=\scriptsize] at (0, 0.25) {#3};
+        \node[text=black, font=\scriptsize] at (#2, 0.25) {#4};
+    }
+}
+
+\newcommand{\bPerp}{\perp}
+
+\newcommand{\bAngle}[4]{%
+    \tikz[baseline=0pt]{
+        \fill[#1] (0,0) -- (0:0.5) arc (0:#3:0.5) -- cycle;
+        \node[text=black, font=\tiny] at (-0.1, 0) {#4};
+        \node[text=black, font=\tiny] at (0.1, 0.6) {#2};
+    }%
+}
+
+\newcommand{\bSector}[3]{%
+    \tikz[baseline=-2pt]{
+        \fill[#1] (0,0) -- (#2:0.5) arc (#2:#3:0.5) -- cycle;
+    }%
+}
+
+\newcommand{\bSemi}{%
+    \tikz[baseline=-2pt]{
+        \draw[black, line width=1.5pt] (0.5,0) arc (0:180:0.5) -- cycle;
+        \draw[black, line width=1pt] (0,0) -- (0, 0.5);
+    }%
+}
+
+\newcommand{\DropCapE}{%
+    \begin{tikzpicture}[baseline=1cm]
+        \fill[black] (0,0) rectangle (2.2, 2.2);
+        \draw[white, very thick] (0.2, 0.2) rectangle (2.0, 2.0);
+        \node[white, font=\fontsize{60}{60}\selectfont, anchor=center] at (1.1, 1.1) {\textbf{E}};
+        \draw[white, thin] (0.2,0.2) to[out=45, in=225] (2,2);
+        \draw[white, thin] (0.2,2) to[out=-45, in=135] (2,0.2);
+    \end{tikzpicture}
+}
+
+\begin{document}
+
+\noindent
+{\large \textbf{КНИГА I ПРЕДЛ. XIII. ТЕОРЕМА}} \hfill {\large \textbf{37}}
+
+\vspace{1cm}
+
+\begin{minipage}[t]{0.65\textwidth}
+    
+    \noindent
+    \makebox[0pt][l]{\DropCapE}
+    \hspace{2.4cm}
+    \begin{minipage}[t]{\linewidth-2.5cm}
+        \textit{сли прямая линия} \bLine{byrneYellow}{1.0}{E}{D} \textit{восставленная на другой прямой линии} \bLine{byrneRed}{1.2}{B}{C} \textit{образует с ней углы, то это будут либо два прямых угла, либо их сумма будет равна двум прямым углам.}
+    \end{minipage}
+
+    \vspace{1cm}
+
+    \noindent
+    Если \bLine{byrneYellow}{1.0}{E}{D} $\mathbf{\perp}$ к \bLine{byrneRed}{1.2}{B}{C} тогда,
+    
+    \vspace{0.3cm}
+    
+    \hspace{1cm}
+    \bSector{byrneYellow}{90}{180} \textbf{и} \bSector{byrneBlue}{0}{90} \textbf{=} \bSemi \hspace{0.2cm} (опр. 10),
+    
+    \vspace{0.8cm}
+    
+    \noindent
+    но если \bLine{byrneYellow}{1.0}{E}{D} будет не $\mathbf{\perp}$ к \bLine{byrneRed}{1.2}{B}{C},
+    
+    \noindent
+    проведем \bLine{black}{1.0}{A}{D} $\mathbf{\perp}$ \bLine{byrneRed}{1.2}{B}{C} (пр. I.11);
+    
+    \vspace{0.3cm}
+    \hspace{1cm}
+    \bSector{byrneYellow}{90}{180} \textbf{+} \bSector{byrneBlue}{0}{90} \textbf{=} \bSemi \hspace{0.2cm} (постр.),
+    
+    \vspace{0.5cm}
+    \hspace{1cm}
+    \bSector{byrneYellow}{90}{180} \textbf{=} \bSector{byrneRed}{90}{180} \textbf{=} \bSector{byrneRed}{135}{180} \textbf{+} \bSector{byrneBlue}{0}{60}
+    
+    \vspace{0.5cm}
+    \noindent
+    $\therefore$ \hspace{0.5cm}
+    \bSector{byrneYellow}{90}{180} \textbf{+} \bSector{byrneBlue}{0}{90} \textbf{=} 
+    \bSector{byrneYellow}{90}{180} \textbf{+} \bSector{byrneRed}{0}{90} \textbf{+} \bSector{byrneBlue}{0}{60} \hspace{0.2cm} (акс. II)
+    
+    \vspace{0.5cm}
+    \hspace{1cm}
+    \textbf{=} \bSector{byrneYellow}{0}{180} \textbf{+} \bSector{byrneBlue}{0}{60} \textbf{=} \bSemi.
+
+    \vspace{1cm} \hfill \textbf{ч. т. д.}
+
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.3\textwidth}
+    \vspace{0pt}
+    \begin{tikzpicture}[scale=1.2]
+        \coordinate (D) at (0,0);
+        \coordinate (B) at (-2,0);
+        \coordinate (C) at (2,0);
+        \coordinate (A) at (0, 3);
+        \coordinate (E) at (1.5, 2.5);
+
+        \fill[byrneYellow] (D) -- (-0.6,0) arc (180:60:0.6) -- cycle;
+        
+        \fill[byrneBlue] (D) -- (0.6,0) arc (0:60:0.6) -- cycle;
+        
+        \draw[byrneRed, line width=3pt] (B) -- (C);
+        \draw[black, line width=3pt] (D) -- (A);
+        \draw[byrneYellow, line width=3pt] (D) -- (E);
+        
+        \node[below] at (D) {\scriptsize D};
+        \node[below] at (B) {\scriptsize B};
+        \node[below] at (C) {\scriptsize C};
+        \node[above] at (A) {\scriptsize A};
+        \node[right] at (E) {\scriptsize E};
+        
+    \end{tikzpicture}
+\end{minipage}
+
+\end{document}
