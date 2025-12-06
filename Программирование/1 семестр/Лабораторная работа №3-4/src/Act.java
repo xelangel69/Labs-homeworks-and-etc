@@ -2,9 +2,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Класс, управляющий основным сценарием (актом) симуляции.
+ * Класс, управляющий основным сценарием симуляции.
  */
 public class Act {
+
+    /**
+     * Конструктор класса Act
+     */
+    public Act(){
+
+    }
 
     private final Kitchen kitchen = new Kitchen();
     private final LivingRoom livingRoom = new LivingRoom();
@@ -19,7 +26,7 @@ public class Act {
     /**
      * Запускает выполнение сценария.
      *
-     * @throws InterruptedException если выполнение потока было прервано во время паузы.
+     * @throws InterruptedException если во время расставления персонажей произошла ошибка.
      */
     public void start() throws InterruptedException {
 
@@ -52,7 +59,7 @@ public class Act {
     /**
      * Симулирует процесс приготовления кофе.
      *
-     * @throws InterruptedException если пауза между действиями прервана.
+     * @throws InterruptedException если кофе убежало.
      */
     private void cookCoffee() throws InterruptedException {
 
@@ -79,7 +86,7 @@ public class Act {
     /**
      * Обрабатывает ветку сюжета с неудачным кофе.
      *
-     * @throws InterruptedException если пауза прервана.
+     * @throws InterruptedException если комната переполнена.
      */
     private void handleBadCoffee() throws InterruptedException {
         System.out.println("\nФрекен Бок идет проверять Малыша в комнату.");
@@ -122,7 +129,7 @@ public class Act {
     /**
      * Обрабатывает ветку сюжета с удачным кофе.
      *
-     * @throws InterruptedException если пауза прервана.
+     * @throws InterruptedException если плюшки несвежие.
      */
     private void handleGoodCoffee() throws InterruptedException {
         System.out.println("\nФрекен Бок идет есть плюшки.");
