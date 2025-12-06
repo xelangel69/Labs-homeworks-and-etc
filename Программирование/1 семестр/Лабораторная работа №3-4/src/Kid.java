@@ -43,6 +43,6 @@ public final class Kid extends Persona {
      */
     @Override
     public String toString() {
-        return "Малыш находится в локации: " + getLocations() + ". Настроение Малыша: " + getMood();
+        return "Малыш находится в локации: " + getLocation() + ". Настроение Малыша: " + getMood();
     }
 }

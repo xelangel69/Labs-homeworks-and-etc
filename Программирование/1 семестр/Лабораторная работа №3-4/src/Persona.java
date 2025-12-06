@@ -73,7 +73,7 @@ public abstract class Persona implements MovingTo, EmotionalState {
      *
      * @param locations новая локация (объект перечисления {@link Locations}).
      */
-    public void setLocations(Locations locations) {
+    public void setLocation(Locations locations) {
         this.locations = locations;
     }
 
@@ -82,7 +82,7 @@ public abstract class Persona implements MovingTo, EmotionalState {
      *
      * @return текущая локация {@link Locations}.
      */
-    public Locations getLocations() {
+    public Locations getLocation() {
         return locations;
     }
 

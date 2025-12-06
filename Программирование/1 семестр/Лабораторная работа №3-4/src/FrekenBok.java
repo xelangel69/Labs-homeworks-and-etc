@@ -30,24 +30,13 @@ public final class FrekenBok extends Persona implements Food {
     }
 
     /**
-     * Принимает решение о проверке Малыша.
-     *
-     * @return {@code true} с вероятностью 50%, если Фрекен Бок решает пойти проверить Малыша,
-     *         иначе {@code false}.
-     */
-    public boolean decideToCheckKid() {
-        Random r = new Random();
-        return r.nextBoolean();
-    }
-
-    /**
      * Процесс приготовления кофе.
      *
      * @throws CoffeeRanAwayException если кофе "убежал" (неудачная попытка приготовления).
      */
     @Override
     public void makeCoffee() throws CoffeeRanAwayException{
-        System.out.println("Фрекен Бок готовит кофе");
+        System.out.println("\nФрекен Бок готовит кофе");
         if (random.nextInt(8) + 2 > 5){
             System.out.println("Кофе получился что надо!");
         }
@@ -98,6 +87,6 @@ public final class FrekenBok extends Persona implements Food {
      */
     @Override
     public String toString() {
-        return "Фрекен Бок находится в локации: " + getLocations() + ". Настроение Фрекен Бок: " + getMood();
+        return "Фрекен Бок находится в локации: " + getLocation() + ". Настроение Фрекен Бок: " + getMood();
     }
 }

@@ -24,10 +24,10 @@ public class Act {
     public void start() throws InterruptedException {
 
         initialPlacement();
-        Thread.sleep(800);
+        Thread.sleep(1000);
 
         cookCoffee();
-        Thread.sleep(800);
+        Thread.sleep(1000);
     }
 
     /**
@@ -55,7 +55,6 @@ public class Act {
      * @throws InterruptedException если пауза между действиями прервана.
      */
     private void cookCoffee() throws InterruptedException {
-        System.out.println("\nФрекен Бок варит кофе");
 
         boolean coffeeIsGood = true;
 
@@ -64,14 +63,15 @@ public class Act {
         } catch (CoffeeRanAwayException e) {
             System.out.println(e.getMessage() + " " + frekenBok.getName() + " вскрикнула!");
             frekenBok.setMood(Mood.ANNOYED);
+            System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
             coffeeIsGood = false;
         }
 
         if (!coffeeIsGood) {
-            Thread.sleep(700);
+            Thread.sleep(1000);
             handleBadCoffee();
         } else {
-            Thread.sleep(700);
+            Thread.sleep(1000);
             handleGoodCoffee();
         }
     }
@@ -82,31 +82,40 @@ public class Act {
      * @throws InterruptedException если пауза прервана.
      */
     private void handleBadCoffee() throws InterruptedException {
-        System.out.println("\nКофе не удался! Фрекен Бок идет проверять Малыша в комнату.");
+        System.out.println("\nФрекен Бок идет проверять Малыша в комнату.");
 
         try {
             kitchen.removeCharacter(frekenBok);
             livingRoom.addCharacter(frekenBok);
+            frekenBok.setLocation(Locations.LIVING_ROOM);
         } catch (LocationOvercrowdedException e) {
             System.out.println("Комната переполнена!");
         }
 
-        Thread.sleep(700);
+        Thread.sleep(1000);
 
-        maybeKarlssonArrivesIntoLivingRoom();
+        maybeKarlssonArrives();
 
-        System.out.println("В комнате сейчас находятся: " + livingRoom.getCharactersIn());
-        
-        boolean karlssonThere = livingRoom.getCharactersIn().stream().anyMatch(p -> p instanceof Karlsson);
+        boolean karlssonThere = false;
+        for (Persona character : livingRoom.getCharactersIn()) {
+            if (character instanceof Karlsson) {
+                karlssonThere = true;
+                break;
+            }
+        }
 
         if (karlssonThere) {
             System.out.println("\nФрекен Бок видит Карлсона в комнате Малыша!");
             frekenBok.setMood(Mood.FURIOUS);
             System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
             frekenBok.chaseKarlsson();
+            kid.setMood(Mood.JOYFUL);
+            System.out.println("Настроение Малыша изменилось на " + kid.getMood());
+            endOfScene();
         } else {
             frekenBok.setMood(Mood.DEFAULT);
             System.out.println("\nМалыш в комнате один, настроение Фрекен Бок изменилось на " + frekenBok.getMood());
+            endOfScene();
         }
     }
 
@@ -116,8 +125,7 @@ public class Act {
      * @throws InterruptedException если пауза прервана.
      */
     private void handleGoodCoffee() throws InterruptedException {
-        System.out.println("\nКофе удался! Фрекен Бок идет есть плюшки.");
-        frekenBok.setMood(Mood.DEFAULT);
+        System.out.println("\nФрекен Бок идет есть плюшки.");
 
         int numberOfBuns = random.nextInt(3) + 2;
         ArrayList<Buns> buns = new ArrayList<>();
@@ -130,17 +138,19 @@ public class Act {
 
         try {
             frekenBok.eatBuns(kitchen.getBunsOnTable());
+            endOfScene();
         } catch (BunsNotFreshException e) {
             System.out.println(frekenBok.getName() + " вскрикнула: " + e.getMessage());
             frekenBok.setMood(Mood.ANGRY);
             System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
+            endOfScene();
         }
     }
 
     /**
      * Определяет вероятность появления Карлсона в комнате.
      */
-    private void maybeKarlssonArrivesIntoLivingRoom() {
+    private void maybeKarlssonArrives() {
         if (random.nextInt(100) < 30) {
             System.out.println("\nСлышно жужжание... Карлсон влетел в комнату Малыша!");
             try {
@@ -149,5 +159,14 @@ public class Act {
                 System.out.println("Комната переполнена, Карлсон улетел.");
             }
         }
+    }
+
+    /**
+     * Задает конец сцены, выводит информацию о состоянии персонажей
+     */
+    public void endOfScene(){
+        System.out.println("\nКонец сцены:");
+        System.out.println("Состояние Малыша - " + kid);
+        System.out.println("Состояние Фрекен Бок - " + frekenBok);
     }
 }
