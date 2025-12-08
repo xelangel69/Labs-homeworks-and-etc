@@ -1,3 +1,11 @@
+package Characters;
+
+import Exceptions.BunsNotFreshException;
+import Exceptions.CoffeeRanAwayException;
+import Interfaces.Food;
+import Items.Buns;
+import Places.Locations;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -75,9 +83,13 @@ public final class FrekenBok extends Persona implements Food {
     /**
      * Действие погони за Карлсоном.
      */
-    public void chaseKarlsson() {
-        System.out.println("Фрекен Бок начинает гоняться за Карлсоном!");
-        setMood(Mood.FURIOUS);
+    public void chaseKarlsson(Persona p) {
+        if (p instanceof Karlsson) {
+            System.out.println("Фрекен Бок гоняется за персонажем " + p.getName());
+            setMood(Mood.FURIOUS);
+        } else {
+            System.out.println("Фрекен Бок не отреагировал на персонажа " + p.getName());
+        }
     }
 
     /**
@@ -88,5 +100,10 @@ public final class FrekenBok extends Persona implements Food {
     @Override
     public String toString() {
         return "Фрекен Бок находится в локации: " + getLocation() + ". Настроение Фрекен Бок: " + getMood();
+    }
+
+    @Override
+    public void moveTo(Locations location) {
+
     }
 }

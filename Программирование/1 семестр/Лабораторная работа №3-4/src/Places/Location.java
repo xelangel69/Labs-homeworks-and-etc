@@ -1,3 +1,8 @@
+package Places;
+
+import Characters.Persona;
+import Exceptions.LocationOvercrowdedException;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -89,7 +94,7 @@ public abstract class Location {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o; // ИСПРАВЛЕНО: каст к Location
+        Location location = (Location) o; // ИСПРАВЛЕНО: каст к places.Location
         return Objects.equals(name, location.name);
     }
 

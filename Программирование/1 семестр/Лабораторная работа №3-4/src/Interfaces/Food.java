@@ -1,4 +1,8 @@
+package Interfaces;
+
 import java.util.ArrayList;
+import Exceptions.*;
+import Items.*;
 
 /**
  * Интерфейс, определяющий взаимодействие персонажа с плюшками и кофе.

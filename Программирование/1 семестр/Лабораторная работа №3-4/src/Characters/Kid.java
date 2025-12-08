@@ -1,3 +1,8 @@
+package Characters;
+
+import Places.*;
+import Interfaces.*;
+
 /**
  * Класс, представляющий персонажа "Малыш".
  */
@@ -6,7 +11,7 @@ public final class Kid extends Persona {
     /**
      * Конструктор персонажа.
      */
-    Kid(){
+    public Kid(){
         super("Малыш", Mood.DEFAULT, Locations.LIVING_ROOM);
     }
 

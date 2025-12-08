@@ -1,3 +1,12 @@
+package App;
+
+import Exceptions.BunsNotFreshException;
+import Exceptions.CoffeeRanAwayException;
+import Exceptions.LocationOvercrowdedException;
+import Items.Buns;
+import Characters.*;
+import Places.*;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -7,7 +16,7 @@ import java.util.Random;
 public class Act {
 
     /**
-     * Конструктор класса Act
+     * Конструктор класса app.Act
      */
     public Act(){
 
@@ -28,7 +37,7 @@ public class Act {
      *
      * @throws InterruptedException если во время расставления персонажей произошла ошибка.
      */
-    public void start() throws InterruptedException {
+    public void start() throws InterruptedException, LocationOvercrowdedException {
 
         initialPlacement();
         Thread.sleep(1000);
@@ -61,7 +70,7 @@ public class Act {
      *
      * @throws InterruptedException если кофе убежало.
      */
-    private void cookCoffee() throws InterruptedException {
+    private void cookCoffee() throws InterruptedException, LocationOvercrowdedException {
 
         boolean coffeeIsGood = true;
 
@@ -115,7 +124,7 @@ public class Act {
             System.out.println("\nФрекен Бок видит Карлсона в комнате Малыша!");
             frekenBok.setMood(Mood.FURIOUS);
             System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
-            frekenBok.chaseKarlsson();
+            frekenBok.chaseKarlsson(karlsson);
             kid.setMood(Mood.JOYFUL);
             System.out.println("Настроение Малыша изменилось на " + kid.getMood());
             endOfScene();
@@ -131,7 +140,12 @@ public class Act {
      *
      * @throws InterruptedException если плюшки несвежие.
      */
-    private void handleGoodCoffee() throws InterruptedException {
+    private void handleGoodCoffee() throws InterruptedException, LocationOvercrowdedException {
+        System.out.println("\n");
+        livingRoom.removeCharacter(kid);
+        kid.moveTo(Locations.KITCHEN);
+        kitchen.addCharacter(kid);
+        kid.setLocation(Locations.KITCHEN);
         System.out.println("\nФрекен Бок идет есть плюшки.");
 
         int numberOfBuns = random.nextInt(3) + 2;
