@@ -1,8 +1,6 @@
 package App;
 
-import Exceptions.BunsNotFreshException;
-import Exceptions.CoffeeRanAwayException;
-import Exceptions.LocationOvercrowdedException;
+import Exceptions.*;
 import Items.Buns;
 import Characters.*;
 import Places.*;
@@ -22,28 +20,37 @@ public class Act {
 
     }
 
+    /**
+     * Создание экземпляров класса Kitchen и LivingRoom
+     */
     private final Kitchen kitchen = new Kitchen();
     private final LivingRoom livingRoom = new LivingRoom();
 
+    /**
+     * Создание экземпляров класса Kid, FrekenBok и Karlsson
+     */
     private final Kid kid = new Kid();
     private final FrekenBok frekenBok = new FrekenBok();
     private final Karlsson karlsson = new Karlsson();
 
-    /** Генератор случайных чисел для событий сцены (свежесть плюшек, появление Карлсона). */
+    /**
+     * Генератор случайных чисел для событий сцены (свежесть плюшек, появление Карлсона).
+     */
     private final Random random = new Random();
+
+    /**
+     * Переменная (bool) проверяющая наличие Малыша на кухне
+     */
+    private boolean kidInKitchen = true;
 
     /**
      * Запускает выполнение сценария.
      *
      * @throws InterruptedException если во время расставления персонажей произошла ошибка.
      */
-    public void start() throws InterruptedException, LocationOvercrowdedException {
-
+    public void start() throws InterruptedException, LocationOvercrowdedException, KidEatBunsException {
         initialPlacement();
-        Thread.sleep(1000);
-
         cookCoffee();
-        Thread.sleep(1000);
     }
 
     /**
@@ -66,11 +73,61 @@ public class Act {
     }
 
     /**
+     * Определяет вероятность того, что Малыш пойдет на кухню
+     */
+    private void kidDecideToGo() {
+        int chance = random.nextInt(10);
+
+        if (chance >= 5) {
+            System.out.println("\nМалыш решился пойти на кухню");
+
+            try {
+                livingRoom.removeCharacter(kid);
+                kid.moveTo(Locations.KITCHEN);
+                kitchen.addCharacter(kid);
+                kid.setLocation(Locations.KITCHEN);
+                kidInKitchen = true;
+            } catch (LocationOvercrowdedException e) {
+                System.out.println("Кухня переполнена!");
+            }
+
+        } else {
+            System.out.println("\nМалыш не решился идти на кухню");
+            kidInKitchen = false;
+        }
+
+    }
+
+    /**
+     * Определяет вероятность того, что Фрекен пойдет в комнату Малыша
+     */
+    private void frekenBokDecideToGo() {
+        int chance = random.nextInt(10);
+
+        if (chance >= 5) {
+            System.out.println("\nФрекен Бок идет проверять Малыша в комнату.");
+
+            try {
+                kitchen.removeCharacter(frekenBok);
+                frekenBok.moveTo(Locations.LIVING_ROOM);
+                livingRoom.addCharacter(frekenBok);
+                frekenBok.setLocation(Locations.LIVING_ROOM);
+            } catch (LocationOvercrowdedException e) {
+                System.out.println("Комната переполнена!");
+            }
+
+        } else {
+            System.out.println("\nФрекен Бок решила не проверять Малыша.");
+        }
+
+    }
+
+    /**
      * Симулирует процесс приготовления кофе.
      *
      * @throws InterruptedException если кофе убежало.
      */
-    private void cookCoffee() throws InterruptedException, LocationOvercrowdedException {
+    private void cookCoffee() throws InterruptedException, KidEatBunsException {
 
         boolean coffeeIsGood = true;
 
@@ -79,15 +136,12 @@ public class Act {
         } catch (CoffeeRanAwayException e) {
             System.out.println(e.getMessage() + " " + frekenBok.getName() + " вскрикнула!");
             frekenBok.setMood(Mood.ANNOYED);
-            System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
             coffeeIsGood = false;
         }
 
         if (!coffeeIsGood) {
-            Thread.sleep(1000);
             handleBadCoffee();
         } else {
-            Thread.sleep(1000);
             handleGoodCoffee();
         }
     }
@@ -98,6 +152,7 @@ public class Act {
      * @throws InterruptedException если комната переполнена.
      */
     private void handleBadCoffee() throws InterruptedException {
+        System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
         System.out.println("\nФрекен Бок идет проверять Малыша в комнату.");
 
         try {
@@ -107,8 +162,6 @@ public class Act {
         } catch (LocationOvercrowdedException e) {
             System.out.println("Комната переполнена!");
         }
-
-        Thread.sleep(1000);
 
         maybeKarlssonArrives();
 
@@ -140,12 +193,9 @@ public class Act {
      *
      * @throws InterruptedException если плюшки несвежие.
      */
-    private void handleGoodCoffee() throws InterruptedException, LocationOvercrowdedException {
-        System.out.println("\n");
-        livingRoom.removeCharacter(kid);
-        kid.moveTo(Locations.KITCHEN);
-        kitchen.addCharacter(kid);
-        kid.setLocation(Locations.KITCHEN);
+    private void handleGoodCoffee() throws InterruptedException, KidEatBunsException {
+        kidDecideToGo();
+
         System.out.println("\nФрекен Бок идет есть плюшки.");
 
         int numberOfBuns = random.nextInt(3) + 2;
@@ -155,16 +205,50 @@ public class Act {
         }
         kitchen.placeBuns(buns);
 
-        Thread.sleep(700);
+        if (kidInKitchen) {
+            kidEatBun();
+        }
 
         try {
             frekenBok.eatBuns(kitchen.getBunsOnTable());
-            endOfScene();
+            if (kidInKitchen) {
+                endOfScene();
+            }
         } catch (BunsNotFreshException e) {
             System.out.println(frekenBok.getName() + " вскрикнула: " + e.getMessage());
-            frekenBok.setMood(Mood.ANGRY);
+            if (frekenBok.getMood() != Mood.ANGRY) {
+                frekenBok.setMood(Mood.ANGRY);
+            } else {
+                frekenBok.setMood(Mood.FURIOUS);
+            }
             System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
             endOfScene();
+        }
+
+        if (!kidInKitchen) {
+            frekenBokDecideToGo();
+            endOfScene();
+        }
+    }
+
+    /**
+     * Определяет вероятность того, что Малыш попробует съесть плюшку
+     */
+    private void kidEatBun() {
+        int chance = random.nextInt(10);
+
+        if (chance >= 5) {
+            System.out.println("\nМалыш пытается съесть плюшку.");
+            try {
+                kid.eatBuns(kitchen.getBunsOnTable());
+            } catch (KidEatBunsException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Фрекен Бок не понравились действия Малыша");
+                frekenBok.setMood(Mood.ANGRY);
+                System.out.println("Настроение Фрекен Бок изменилось на " + frekenBok.getMood());
+            }
+        } else {
+            System.out.println("Малыш не решился съесть плюшку");
         }
     }
 

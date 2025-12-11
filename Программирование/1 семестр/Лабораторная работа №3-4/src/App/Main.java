@@ -1,5 +1,6 @@
 package App;
 
+import Exceptions.KidEatBunsException;
 import Exceptions.LocationOvercrowdedException;
 
 /**
@@ -20,7 +21,7 @@ public class Main {
      * @param args аргументы командной строки.
      * @throws InterruptedException для случаев, если произошла ошибка во время выполнения.
      */
-    public static void main(String[] args) throws InterruptedException, LocationOvercrowdedException {
+    public static void main(String[] args) throws InterruptedException, LocationOvercrowdedException, KidEatBunsException {
         new Act().start();
     }
 }

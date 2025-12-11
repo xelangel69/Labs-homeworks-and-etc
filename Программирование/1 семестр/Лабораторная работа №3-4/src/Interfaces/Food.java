@@ -22,5 +22,5 @@ public interface Food {
      * @param buns список объектов {@link Buns}, которые персонаж собирается съесть.
      * @throws BunsNotFreshException если среди плюшек попадается несвежая.
      */
-    void eatBuns(ArrayList<Buns> buns) throws BunsNotFreshException;
+    void eatBuns(ArrayList<Buns> buns) throws BunsNotFreshException, KidEatBunsException;
 }
